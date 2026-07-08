@@ -43,6 +43,18 @@ public class FileGastoRepository implements GastoRepository {
 				.anyMatch(gasto -> gasto.getCategoriaId().equals(categoriaId));
 	}
 
+	@Override
+	public synchronized List<Gasto> listarTodos() {
+		return List.copyOf(carregarTodos());
+	}
+
+	@Override
+	public synchronized List<Gasto> listarPorCategoriaId(Long categoriaId) {
+		return carregarTodos().stream()
+				.filter(gasto -> gasto.getCategoriaId().equals(categoriaId))
+				.toList();
+	}
+
 	private List<Gasto> carregarTodos() {
 		try {
 			List<Gasto> gastos = new ArrayList<>();

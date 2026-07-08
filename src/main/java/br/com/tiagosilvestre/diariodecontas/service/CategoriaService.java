@@ -9,6 +9,8 @@ import br.com.tiagosilvestre.diariodecontas.repository.CategoriaRepository;
 import br.com.tiagosilvestre.diariodecontas.repository.GastoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoriaService {
 
@@ -18,6 +20,12 @@ public class CategoriaService {
 	public CategoriaService(CategoriaRepository categoriaRepository, GastoRepository gastoRepository) {
 		this.categoriaRepository = categoriaRepository;
 		this.gastoRepository = gastoRepository;
+	}
+
+	public List<CategoriaResponse> listar() {
+		return categoriaRepository.listarTodas().stream()
+				.map(this::toResponse)
+				.toList();
 	}
 
 	public CategoriaResponse cadastrar(CadastroCategoriaRequest request) {
