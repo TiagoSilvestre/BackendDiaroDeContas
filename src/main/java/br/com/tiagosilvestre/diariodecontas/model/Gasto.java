@@ -1,21 +1,34 @@
 package br.com.tiagosilvestre.diariodecontas.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "gastos")
 public class Gasto {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal valor;
-	private Long categoriaId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categoria categoria;
+
+	@Column(length = 255)
 	private String descricao;
 
 	public Gasto() {
 	}
 
-	public Gasto(Long id, BigDecimal valor, Long categoriaId, String descricao) {
+	public Gasto(Long id, BigDecimal valor, Categoria categoria, String descricao) {
 		this.id = id;
 		this.valor = valor;
-		this.categoriaId = categoriaId;
+		this.categoria = categoria;
 		this.descricao = descricao;
 	}
 
@@ -35,12 +48,12 @@ public class Gasto {
 		this.valor = valor;
 	}
 
-	public Long getCategoriaId() {
-		return categoriaId;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setCategoriaId(Long categoriaId) {
-		this.categoriaId = categoriaId;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	public String getDescricao() {

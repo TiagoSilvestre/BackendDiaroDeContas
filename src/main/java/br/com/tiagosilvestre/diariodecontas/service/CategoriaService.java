@@ -23,7 +23,7 @@ public class CategoriaService {
 	}
 
 	public List<CategoriaResponse> listar() {
-		return categoriaRepository.listarTodas().stream()
+		return categoriaRepository.findAll().stream()
 				.map(this::toResponse)
 				.toList();
 	}
@@ -31,18 +31,20 @@ public class CategoriaService {
 	public CategoriaResponse cadastrar(CadastroCategoriaRequest request) {
 		Categoria categoria = new Categoria();
 		categoria.setNome(request.nome().trim());
-		Categoria salva = categoriaRepository.salvar(categoria);
+		Categoria salva = categoriaRepository.save(categoria);
 		return toResponse(salva);
 	}
 
 	public void excluir(Long id) {
-		if (categoriaRepository.buscarPorId(id).isEmpty()) {
+		if (!categoriaRepository.existsById(id)) {
 			throw new CategoriaNaoEncontradaException(id);
 		}
-		if (gastoRepository.existePorCategoriaId(id)) {
+
+		if (gastoRepository.existsByCategoriaId(id)) {
 			throw new CategoriaEmUsoException(id);
 		}
-		categoriaRepository.excluirPorId(id);
+
+		categoriaRepository.deleteById(id);
 	}
 
 	private CategoriaResponse toResponse(Categoria categoria) {

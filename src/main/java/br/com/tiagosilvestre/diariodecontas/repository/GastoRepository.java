@@ -1,16 +1,15 @@
 package br.com.tiagosilvestre.diariodecontas.repository;
 
 import br.com.tiagosilvestre.diariodecontas.model.Gasto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface GastoRepository {
+@Repository
+public interface GastoRepository  extends JpaRepository<Gasto, Long> {
 
-	Gasto salvar(Gasto gasto);
+	List<Gasto> findByCategoriaId(Long categoriaId);
 
-	boolean existePorCategoriaId(Long categoriaId);
-
-	List<Gasto> listarTodos();
-
-	List<Gasto> listarPorCategoriaId(Long categoriaId);
+	boolean existsByCategoriaId(Long categoriaId);
 }

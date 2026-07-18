@@ -1,17 +1,11 @@
 package br.com.tiagosilvestre.diariodecontas.repository;
 
 import br.com.tiagosilvestre.diariodecontas.model.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface CategoriaRepository {
+@Repository
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-	Categoria salvar(Categoria categoria);
-
-	Optional<Categoria> buscarPorId(Long id);
-
-	List<Categoria> listarTodas();
-
-	boolean excluirPorId(Long id);
 }

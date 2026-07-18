@@ -4,6 +4,7 @@ import br.com.tiagosilvestre.diariodecontas.dto.CadastroGastoRequest;
 import br.com.tiagosilvestre.diariodecontas.dto.GastoResponse;
 import br.com.tiagosilvestre.diariodecontas.dto.ListagemGastosResponse;
 import br.com.tiagosilvestre.diariodecontas.exception.CategoriaNaoEncontradaException;
+import br.com.tiagosilvestre.diariodecontas.model.Categoria;
 import br.com.tiagosilvestre.diariodecontas.model.Gasto;
 import br.com.tiagosilvestre.diariodecontas.repository.CategoriaRepository;
 import br.com.tiagosilvestre.diariodecontas.repository.GastoRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GastoService {
@@ -25,13 +27,15 @@ public class GastoService {
 
 	public ListagemGastosResponse listar(Long categoriaId) {
 		List<Gasto> gastos;
+
 		if (categoriaId != null) {
-			if (categoriaRepository.buscarPorId(categoriaId).isEmpty()) {
+			if (categoriaRepository.existsById(categoriaId)) {
 				throw new CategoriaNaoEncontradaException(categoriaId);
 			}
-			gastos = gastoRepository.listarPorCategoriaId(categoriaId);
+
+			gastos = gastoRepository.findByCategoriaId(categoriaId);
 		} else {
-			gastos = gastoRepository.listarTodos();
+			gastos = gastoRepository.findAll();
 		}
 
 		List<GastoResponse> gastosResponse = gastos.stream()
@@ -46,16 +50,17 @@ public class GastoService {
 	}
 
 	public GastoResponse cadastrar(CadastroGastoRequest request) {
-		if (categoriaRepository.buscarPorId(request.categoriaId()).isEmpty()) {
-			throw new CategoriaNaoEncontradaException(request.categoriaId());
-		}
+		Categoria categoria = categoriaRepository.findById(request.categoriaId())
+				.orElseThrow(() ->
+						new CategoriaNaoEncontradaException(request.categoriaId()));
 
 		Gasto gasto = new Gasto();
 		gasto.setValor(request.valor());
-		gasto.setCategoriaId(request.categoriaId());
 		gasto.setDescricao(request.descricao().trim());
+		gasto.setCategoria(categoria);
 
-		Gasto salvo = gastoRepository.salvar(gasto);
+		Gasto salvo = gastoRepository.save(gasto);
+
 		return toResponse(salvo);
 	}
 
@@ -63,7 +68,7 @@ public class GastoService {
 		return new GastoResponse(
 				gasto.getId(),
 				gasto.getValor(),
-				gasto.getCategoriaId(),
+				gasto.getCategoria().getId(),
 				gasto.getDescricao()
 		);
 	}
