@@ -1,6 +1,6 @@
 package br.com.tiagosilvestre.diariodecontas.controller;
 
-import br.com.tiagosilvestre.diariodecontas.dto.CadastroGastoRequest;
+import br.com.tiagosilvestre.diariodecontas.dto.GastoRequest;
 import br.com.tiagosilvestre.diariodecontas.dto.GastoResponse;
 import br.com.tiagosilvestre.diariodecontas.dto.ListagemGastosResponse;
 import br.com.tiagosilvestre.diariodecontas.service.GastoService;
@@ -31,7 +31,7 @@ public class GastoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public GastoResponse cadastrar(@Valid @RequestBody CadastroGastoRequest request) {
+	public GastoResponse cadastrar(@Valid @RequestBody GastoRequest request) {
 		return gastoService.cadastrar(request);
 	}
 }

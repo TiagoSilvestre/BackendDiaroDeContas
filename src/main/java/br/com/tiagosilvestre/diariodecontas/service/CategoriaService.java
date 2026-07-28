@@ -1,6 +1,6 @@
 package br.com.tiagosilvestre.diariodecontas.service;
 
-import br.com.tiagosilvestre.diariodecontas.dto.CadastroCategoriaRequest;
+import br.com.tiagosilvestre.diariodecontas.dto.CategoriaRequest;
 import br.com.tiagosilvestre.diariodecontas.dto.CategoriaResponse;
 import br.com.tiagosilvestre.diariodecontas.exception.CategoriaEmUsoException;
 import br.com.tiagosilvestre.diariodecontas.exception.CategoriaNaoEncontradaException;
@@ -28,7 +28,7 @@ public class CategoriaService {
 				.toList();
 	}
 
-	public CategoriaResponse cadastrar(CadastroCategoriaRequest request) {
+	public CategoriaResponse cadastrar(CategoriaRequest request) {
 		Categoria categoria = new Categoria();
 		categoria.setNome(request.nome().trim());
 		Categoria salva = categoriaRepository.save(categoria);

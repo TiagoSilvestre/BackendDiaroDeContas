@@ -1,6 +1,6 @@
 package br.com.tiagosilvestre.diariodecontas.controller;
 
-import br.com.tiagosilvestre.diariodecontas.dto.CadastroCategoriaRequest;
+import br.com.tiagosilvestre.diariodecontas.dto.CategoriaRequest;
 import br.com.tiagosilvestre.diariodecontas.dto.CategoriaResponse;
 import br.com.tiagosilvestre.diariodecontas.service.CategoriaService;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class CategoriaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CategoriaResponse cadastrar(@Valid @RequestBody CadastroCategoriaRequest request) {
+	public CategoriaResponse cadastrar(@Valid @RequestBody CategoriaRequest request) {
 		return categoriaService.cadastrar(request);
 	}
 

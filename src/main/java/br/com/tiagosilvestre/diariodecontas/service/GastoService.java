@@ -1,6 +1,6 @@
 package br.com.tiagosilvestre.diariodecontas.service;
 
-import br.com.tiagosilvestre.diariodecontas.dto.CadastroGastoRequest;
+import br.com.tiagosilvestre.diariodecontas.dto.GastoRequest;
 import br.com.tiagosilvestre.diariodecontas.dto.GastoResponse;
 import br.com.tiagosilvestre.diariodecontas.dto.ListagemGastosResponse;
 import br.com.tiagosilvestre.diariodecontas.exception.CategoriaNaoEncontradaException;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GastoService {
 
 	private final GastoRepository gastoRepository;
+
 	private final CategoriaRepository categoriaRepository;
 
 	public GastoService(GastoRepository gastoRepository, CategoriaRepository categoriaRepository) {
@@ -29,7 +29,7 @@ public class GastoService {
 		List<Gasto> gastos;
 
 		if (categoriaId != null) {
-			if (categoriaRepository.existsById(categoriaId)) {
+			if (!categoriaRepository.existsById(categoriaId)) {
 				throw new CategoriaNaoEncontradaException(categoriaId);
 			}
 
@@ -49,7 +49,7 @@ public class GastoService {
 		return new ListagemGastosResponse(gastosResponse, valorTotal);
 	}
 
-	public GastoResponse cadastrar(CadastroGastoRequest request) {
+	public GastoResponse cadastrar(GastoRequest request) {
 		Categoria categoria = categoriaRepository.findById(request.categoriaId())
 				.orElseThrow(() ->
 						new CategoriaNaoEncontradaException(request.categoriaId()));
