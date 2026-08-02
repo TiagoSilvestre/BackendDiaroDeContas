@@ -36,6 +36,7 @@ public class CategoriaController {
 	public CategoriaResponse cadastrar(@Valid @RequestBody CategoriaRequest request) {
 		return categoriaService.cadastrar(request);
 	}
+	
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
