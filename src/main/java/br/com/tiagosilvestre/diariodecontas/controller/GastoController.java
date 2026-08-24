@@ -29,6 +29,7 @@ public class GastoController {
 		return gastoService.listar(categoriaId);
 	}
 
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GastoResponse cadastrar(@Valid @RequestBody GastoRequest request) {
